@@ -1,0 +1,15 @@
+.header__description--header {
+  text-align: center;
+  font-weight: bold;
+  text-decoration-line: underline;
+  /* overflow: auto; */
+}
+
+.header__description--content {
+  /* display: flex; */
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  place-items: start;
+  gap: 1px;
+  margin-top: 5px;
+}

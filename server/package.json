@@ -1,0 +1,33 @@
+{
+  "name": "demo-knex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "dev": "nodemon ./index.js",
+    "test": "mocha test",
+    "migrate": "knex migrate:latest",
+    "migrate-down": "knex migrate:down",
+    "seed": "knex seed:run",
+    "makeMigration": "knex migrate:make",
+    "makeSeed": "knex seed:make",
+    "all-setup": "npm run migrate && npm run seed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "knex": "^2.0.0",
+    "pg": "^8.7.3"
+  },
+  "devDependencies": {
+    "chai": "^4.3.10",
+    "chai-http": "^4.4.0",
+    "cors": "^2.8.5",
+    "mocha": "^10.2.0",
+    "nodemon": "^3.0.1"
+  }
+}

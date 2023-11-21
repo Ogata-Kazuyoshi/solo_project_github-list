@@ -1,0 +1,46 @@
+.list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  place-items: start;
+  gap: 5px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.list__top {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 3px;
+  width: 95%;
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(255, 218, 163);
+}
+
+.list__top--name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.list__top--date {
+  font-size: 12px;
+}
+
+.list__top--description {
+  font-size: 12px;
+}
+
+.list__top--btn {
+  border-radius: 5px;
+  transition: all 0.3s;
+}
+
+.list__top--btn:hover {
+  font-weight: bold;
+  transform: translate(2px, 2px);
+  color: white;
+  background-color: rgb(126, 126, 251);
+}

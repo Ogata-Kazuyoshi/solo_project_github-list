@@ -1,0 +1,42 @@
+.modal__wrap {
+  display: flex;
+  width: 50vw;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: rgb(255, 239, 216);
+  padding-top: 5px;
+}
+
+.modal_content {
+  display: flex;
+  margin: 10px;
+}
+
+.modal_subject {
+  width: 150px;
+  /* border: 1px solid black; */
+  text-align: center;
+}
+
+.input {
+  width: 300px;
+}
+
+.user__button {
+  display: flex;
+}
+
+.add__button {
+  transition: all 0.3s;
+  border-radius: 5px;
+}
+
+.add__button:hover {
+  font-weight: bold;
+  transform: translate(2px, 2px);
+  color: white;
+  background-color: rgb(126, 126, 251);
+}
