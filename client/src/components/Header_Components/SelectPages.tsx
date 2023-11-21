@@ -1,11 +1,13 @@
 import React from 'react';
 import '../../styles/Header_Components/selectPages.css';
-import { ViewAll } from '../../interface/functionInterface';
+import { IsAuthChange, ViewAll } from '../../interface/functionInterface';
+import LogoutIcon from '@mui/icons-material/Logout';
+import authApi from '../../api/auth';
+import { useNavigate } from 'react-router-dom';
 
-// import "../../styles/header.css";
-
-const SelectPages: React.FC<ViewAll> = (props) => {
-  const { viewAll, setViewAll } = props;
+const SelectPages: React.FC<ViewAll & IsAuthChange> = (props) => {
+  const { viewAll, setViewAll, isAuth, setIsAuth } = props;
+  const navigate = useNavigate();
   const clickHandler = (arg: 'all' | 'modify') => {
     switch (arg) {
       case 'all':
@@ -16,8 +18,17 @@ const SelectPages: React.FC<ViewAll> = (props) => {
         break;
     }
   };
+
+  const clickLogout = async () => {
+    const res = await authApi.logout();
+    if (res.data.message === 'Logout successful') {
+      setIsAuth(!isAuth);
+      navigate('/login');
+    }
+  };
   return (
     <div className="header__button">
+      <LogoutIcon onClick={clickLogout} className="header__logout" />
       <div className="selectbutton">
         <div
           className="selectbutton__common"

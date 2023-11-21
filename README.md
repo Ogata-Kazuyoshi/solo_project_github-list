@@ -4,12 +4,14 @@
 - [Browser Support](#browser-support)
 - [OverView App](#overview-app)
 - [Installing & Setup](#installing--setup)
+- [Future](#future)
 
 # Features
 
-- Modify the style
-- Deploy to some Paas
-- Create authentification system
+- Full-stack application [deployed to render](https://solo-project-github-list.onrender.com)
+- front-end react
+- back-end javascript (run-time : node)
+- DB postgres
 
 # Browser Support
 
@@ -83,3 +85,9 @@ npm install
 ```zh
 npm run dev
 ```
+
+# Future
+
+- Modify the style
+- Deploy to some Paas
+- Create authentification system

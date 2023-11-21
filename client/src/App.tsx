@@ -1,73 +1,53 @@
-import { useEffect, useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Header from './components/Header';
-import CurrentList from './components/CurrentList';
-import DBList from './components/DBList';
-import dbApi from './api/getData';
-import { addUrl, createDescription } from './controller/dataController';
-import {
-  ChangedData,
-  DescriptionType,
-  RawData,
-} from './interface/functionInterface';
+import TOP from './TOP';
+import AuthLayout from './components/Auth/AuthLayout';
+import Login from './components/Auth/Login';
+import { useEffect, useState } from 'react';
+import authApi from './api/auth';
 
 function App() {
-  const [viewAll, setViewAll] = useState<boolean>(true);
-  const [allData, setAllData] = useState<ChangedData[]>([]);
-  const [checkedData, setCheckedData] = useState<ChangedData[]>([]);
-  const [description, setDescription] = useState<DescriptionType[]>([]);
-  const [isModal, setIsModal] = useState<boolean>(false);
+  const [isAuth, setIsAuth] = useState<boolean>(false);
+  // const [user, setUser] = useState<any>(null);
 
-  useEffect(() => {
-    const getData = async () => {
-      const res = await dbApi.getAll();
+  const checkAuth = async () => {
+    try {
+      const res = await authApi.checkAuth();
       // console.log('res : ', res);
-      const tempData: RawData[] = res.data;
-      const changeRes = addUrl(tempData);
-      // console.log("changeRes : ", changeRes);
-      setAllData(changeRes);
-      const onlyDescription = createDescription(
-        tempData.map((elm) => elm.description)
-      );
-      // console.log("onlyDescription", onlyDescription);
-      setDescription(onlyDescription);
-    };
-    getData();
-  }, []);
+      if (res.data.authenticated) {
+        setIsAuth(true);
+        // setUser(res.data.user);
+      } else {
+        setIsAuth(false);
+        // setUser(null);
+      }
+    } catch (err) {
+      console.log(`Error : ${err}`);
+    }
+  };
 
   useEffect(() => {
-    const checkDescription = description
-      .filter((elm) => elm.isVisible === true)
-      .map((elm) => elm.description);
-    const tempCheckedData = allData.filter((elm) => {
-      for (const check of checkDescription) {
-        if (!elm.description.includes(check)) return false;
-      }
-      return true;
-    });
-    setCheckedData(tempCheckedData);
-  }, [description]);
-
+    checkAuth();
+  }, []);
   return (
-    <div className="TOP">
-      <Header
-        description={description}
-        setDescription={setDescription}
-        viewAll={viewAll}
-        setViewAll={setViewAll}
-      />
-      {viewAll ? (
-        <CurrentList checkedData={checkedData} />
-      ) : (
-        <DBList
-          description={description}
-          setDescription={setDescription}
-          allData={allData}
-          setAllData={setAllData}
-          isModal={isModal}
-          setIsModal={setIsModal}
-        />
-      )}
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<AuthLayout />}>
+            <Route
+              path="/login"
+              element={<Login isAuth={isAuth} setIsAuth={setIsAuth} />}
+            />
+            {/* <Route path="/resister" element={<Resister />} /> */}
+          </Route>
+          <Route>
+            <Route
+              path="/main"
+              element={<TOP isAuth={isAuth} setIsAuth={setIsAuth} />}
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

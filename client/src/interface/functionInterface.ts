@@ -54,3 +54,17 @@ export interface ModalType {
   setIsModal: (arg: boolean) => void;
   setAllData: (arg: ChangedData[]) => void;
 }
+
+export interface AuthData {
+  username: string;
+  password: string;
+}
+
+export interface IsAuthChange {
+  isAuth: boolean;
+  setIsAuth: (arg: boolean) => void;
+}
+
+export interface IsAuthCurrent {
+  isAuth: boolean;
+}
