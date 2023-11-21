@@ -169,5 +169,12 @@ exports.seed = async function (knex) {
       description: 'week7/assesment/react/materialUI',
       like: false,
     },
+    {
+      project_name: 'solo_project_github-list',
+      create_date: '2023-11-20',
+      description:
+        'week7/chai/react/typescript/materialUI/axios/full-stack/knex',
+      like: false,
+    },
   ]);
 };
