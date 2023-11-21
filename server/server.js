@@ -1,7 +1,7 @@
 // expressのセットアップ
 const express = require('express');
 const apiRoute = require('./Routes');
-const cors = require('cors');
+// const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const session = require('express-session');
