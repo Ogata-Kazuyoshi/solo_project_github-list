@@ -1,8 +1,9 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import TOP from './TOP';
 import AuthLayout from './components/Auth/AuthLayout';
 import Login from './components/Auth/Login';
+import Signup from './components/Auth/Signup';
 import { useEffect, useState } from 'react';
 import authApi from './api/auth';
 
@@ -16,6 +17,7 @@ function App() {
       // console.log('res : ', res);
       if (res.data.authenticated) {
         setIsAuth(true);
+        console.log('res.data.user : ', res.data.user);
         // setUser(res.data.user);
       } else {
         setIsAuth(false);
@@ -36,7 +38,23 @@ function App() {
           <Route path="/" element={<AuthLayout />}>
             <Route
               path="/login"
-              element={<Login isAuth={isAuth} setIsAuth={setIsAuth} />}
+              element={
+                <Login
+                  isAuth={isAuth}
+                  setIsAuth={setIsAuth}
+                  checkAuth={checkAuth}
+                />
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <Signup
+                  isAuth={isAuth}
+                  setIsAuth={setIsAuth}
+                  checkAuth={checkAuth}
+                />
+              }
             />
             {/* <Route path="/resister" element={<Resister />} /> */}
           </Route>

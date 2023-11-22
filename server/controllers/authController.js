@@ -7,9 +7,51 @@ const enhash = (str) => {
   const hash = crypto.createHash('sha256');
   return hash.update(str).digest('hex');
 };
+const enSalt = () => crypto.randomBytes(6).toString('hex');
 
 // Passportの設定
+//local-signup
 passport.use(
+  'local-signup',
+  new LocalStrategy(
+    { passReqToCallback: true },
+    async (req, username, password, done) => {
+      // 新規登録時にはユーザーの存在チェックなどを行う
+      const existingUser = users.find((u) => u.user_name === username);
+      if (existingUser) {
+        return done(null, false, { message: 'Username already exists.' });
+      }
+
+      const salt = enSalt();
+      const hashed = enhash(`${salt}${password}`);
+      const createUser = {
+        user_name: username,
+        salt: salt,
+        hased_password: hashed,
+      };
+
+      const newId = await knex('user_authentification')
+        .insert(createUser)
+        .returning('id')
+        .then((elm) => elm[0].id);
+      console.log('newId : ', newId);
+
+      const newUser = {
+        id: newId,
+        user_name: username,
+        salt: salt,
+        hased_password: password,
+      };
+      users.push(newUser);
+
+      return done(null, newUser);
+    }
+  )
+);
+
+//local-login
+passport.use(
+  'local-login',
   new LocalStrategy((username, password, done) => {
     const user = users.find(
       (u) =>
@@ -29,9 +71,16 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
+  //cookie情報を入れる際に返却するuser情報。ソルト化されたPWなどは落とすようにする。
   const user = users.find((u) => u.id === id);
-  done(null, user);
+  const sendUser = {
+    id: user.id,
+    user_name: user.user_name,
+  };
+  done(null, sendUser);
 });
+const passportAuth = passport.authenticate('local-login');
+const passportSignup = passport.authenticate('local-signup');
 
 let users = [];
 const getAllUser = async (req, res, next) => {
@@ -48,15 +97,17 @@ const getAllUser = async (req, res, next) => {
   }
 };
 
-const passportAuth = passport.authenticate('local');
-
 const login = (req, res) => {
   res.json({ message: 'Login successful' });
 };
 
 const checkAuth = (req, res) => {
   if (req.isAuthenticated()) {
-    res.json({ authenticated: true, user: req.user });
+    console.log('req.user : ', req.user);
+    res.json({
+      authenticated: true,
+      user: { id: req.user.id, username: req.user.user_name },
+    });
   } else {
     res.json({ authenticated: false });
   }
@@ -72,7 +123,20 @@ const logout = (req, res) => {
   res;
 };
 
-module.exports = { enhash, getAllUser, passportAuth, checkAuth, login, logout };
+const signup = (req, res) => {
+  res.json({ message: 'Signup successful' });
+};
+
+module.exports = {
+  enhash,
+  getAllUser,
+  passportAuth,
+  passportSignup,
+  checkAuth,
+  login,
+  logout,
+  signup,
+};
 
 //以下記念。passport使う前に自分で無理くり認証処理していたやつ
 // const authentification = async (req, res) => {

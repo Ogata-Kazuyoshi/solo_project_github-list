@@ -63,6 +63,7 @@ export interface AuthData {
 export interface IsAuthChange {
   isAuth: boolean;
   setIsAuth: (arg: boolean) => void;
+  checkAuth?: () => void;
 }
 
 export interface IsAuthCurrent {

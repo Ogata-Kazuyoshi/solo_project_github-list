@@ -1,14 +1,15 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import '../../styles/Auth/login.css';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import authApi from '../../api/auth';
-import { useNavigate } from 'react-router-dom';
 import { IsAuthChange } from '../../interface/functionInterface';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import { useNavigate } from 'react-router-dom';
+import authApi from '../../api/auth';
 
-const Login: React.FC<IsAuthChange> = (props) => {
+const Signup: React.FC<IsAuthChange> = (props) => {
   const { isAuth, setIsAuth, checkAuth } = props;
   const [userName, setUserName] = useState<string>('');
   const [userPass, setUserPass] = useState<string>('');
+  const [userConfirmPass, setUserConfirmPass] = useState<string>('');
 
   const navigate = useNavigate();
 
@@ -20,35 +21,46 @@ const Login: React.FC<IsAuthChange> = (props) => {
     setUserPass(event.target.value);
   };
 
-  const clickLogin = async () => {
-    if (userName === '' || userPass === '') {
-      window.alert('ユーザー名とパスワードを入力してください');
+  const changeUserConfirmPass = (event: ChangeEvent<HTMLInputElement>) => {
+    setUserConfirmPass(event.target.value);
+  };
+
+  const clickSignup = async () => {
+    if (userName === '' || userPass === '' || userConfirmPass === '') {
+      window.alert(
+        'ユーザー名、パスワード、確認用パスワードを入力してください'
+      );
+      return;
+    }
+    if (userPass !== userConfirmPass) {
+      window.alert('パスワードと確認用のパスワードが違います');
       return;
     }
     const sendData = { username: userName, password: userPass };
     try {
-      const res = await authApi.login(sendData);
-      // console.log('res : ', res);
-      if (res.data.message) {
-        // console.log('認証成功');
-        setIsAuth(true);
-        checkAuth!();
-      }
       setUserName('');
       setUserPass('');
+      setUserConfirmPass('');
+      const res = await authApi.signup(sendData);
+      console.log('res : ', res);
+      if (res.data.message) {
+        console.log('新規作成成功');
+        setIsAuth(true);
+        setUserConfirmPass('');
+        checkAuth!();
+      }
     } catch (err) {
-      window.alert(`認証に失敗しました : ${err}`);
+      window.alert(`認証に失敗しました すでに存在するユーザー名です : ${err}`);
     }
   };
 
   const changePath = () => {
-    navigate('/signup');
+    navigate('/login');
   };
 
   useEffect(() => {
     if (isAuth) navigate('/main');
   }, [isAuth]);
-
   return (
     <div className="authWrap">
       <div className="auth">
@@ -69,22 +81,26 @@ const Login: React.FC<IsAuthChange> = (props) => {
             <input type="password" value={userPass} onChange={changeUserPass} />
           </div>
         </div>
-        <div className="auth__container" style={{ visibility: 'hidden' }}>
+        <div className="auth__container">
           <div className="auth__content">
             <label htmlFor="">パスワード（確認）</label>
           </div>
           <div className="auth__input">
-            <input type="password" value={userPass} onChange={changeUserPass} />
+            <input
+              type="password"
+              value={userConfirmPass}
+              onChange={changeUserConfirmPass}
+            />
           </div>
         </div>
         <div className="auth_btn_container">
-          <button className="auth_btn" onClick={clickLogin}>
-            ログイン
+          <button className="auth_btn" onClick={clickSignup}>
+            新規登録
           </button>
         </div>
         <div className="auth_btn_container auth_labl_container">
           <label className="auth_label" onClick={changePath}>
-            新規登録はこちら
+            ログインはこちら
           </label>
         </div>
       </div>
@@ -92,4 +108,4 @@ const Login: React.FC<IsAuthChange> = (props) => {
   );
 };
 
-export default Login;
+export default Signup;

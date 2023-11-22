@@ -11,6 +11,7 @@ const getAll = async (req, res) => {
 
 const createData = async (req, res) => {
   const newInfo = req.body;
+  console.log('req.user : ', req.user);
   try {
     await knex('repository_info').insert(newInfo);
     res.status(201).send(`data created!`);
