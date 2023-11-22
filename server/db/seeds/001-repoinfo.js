@@ -173,13 +173,13 @@ exports.seed = async function (knex) {
       project_name: 'solo_project_github-list',
       create_date: '2023-11-20',
       description:
-        'week7/chai/react/typescript/materialUI/axios/full-stack/knex',
+        'week7/chai/react/react-router/typescript/materialUI/axios/full-stack/node/rooting/postgres/knex/passport/deploy',
       like: false,
     },
     {
       project_name: 'passport-js-try',
       create_date: '2023-11-22',
-      description: 'week7/passport',
+      description: 'week7/passport/full-stack/react/node',
       like: false,
     },
   ]);
