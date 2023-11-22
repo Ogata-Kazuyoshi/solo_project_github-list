@@ -19,6 +19,16 @@
 
 # OverView App
 
+### Authorization
+
+- Sign in page. once you login the system, you can skip this page automatically due to cookie
+
+- temporary accout are bellowes for render App. feel free to login. currently, you can't use sign up button.
+
+  - **username: user1** , **password = 1234**
+
+  ![authorization-page](./assets/images/authorization.png)
+
 ### Main-page
 
 - You can see the all lists and can sort according to toggle switch if you want!
@@ -90,4 +100,4 @@ npm run dev
 
 - Modify the style
 - Deploy to some Paas
-- Create authentification system
+- Create authentification system (Sign up)

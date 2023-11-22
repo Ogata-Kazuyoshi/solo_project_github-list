@@ -28,9 +28,9 @@ const Login: React.FC<IsAuthChange> = (props) => {
     const sendData = { username: userName, password: userPass };
     try {
       const res = await authApi.login(sendData);
-      console.log('res : ', res);
+      // console.log('res : ', res);
       if (res.data.message) {
-        console.log('認証成功');
+        // console.log('認証成功');
         setIsAuth(true);
         navigate('/main');
       }

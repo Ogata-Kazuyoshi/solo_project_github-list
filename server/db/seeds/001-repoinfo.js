@@ -176,5 +176,11 @@ exports.seed = async function (knex) {
         'week7/chai/react/typescript/materialUI/axios/full-stack/knex',
       like: false,
     },
+    {
+      project_name: 'passport-js-try',
+      create_date: '2023-11-22',
+      description: 'week7/passport',
+      like: false,
+    },
   ]);
 };
