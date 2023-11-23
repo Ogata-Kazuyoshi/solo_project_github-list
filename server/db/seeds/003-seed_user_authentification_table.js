@@ -21,10 +21,10 @@ exports.seed = async function (knex) {
     },
     {
       id: 3,
-      user_name: 'user2',
-      salt: 'Ulztl2',
+      user_name: 'user3',
+      salt: '20a7be6fc3b0',
       hased_password:
-        '397f02aa1c5375e3b1f4b5863c624ae369ead8e2f7af53e3fc7af9e2573cdc6',
+        'd08038eb6a48539f4dd658686679fea6da74ef38c77616295d092b18dab48beb',
     },
   ]);
 };

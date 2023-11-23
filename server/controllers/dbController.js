@@ -1,8 +1,25 @@
 const knex = require('../knexIndex');
 
 const getAll = async (req, res) => {
+  console.log('getAll req.user : ', req.user);
   try {
-    const getAll = await knex.select('*').from('repository_info').orderBy('id');
+    const getAll = await knex
+      .select({
+        id: 'repository_info.id',
+        project_name: 'repository_info.project_name',
+        create_date: 'repository_info.create_date',
+        description: 'repository_info.description',
+        like: 'repository_info.like',
+      })
+      .from('repository_info')
+      .join(
+        'user_authentification',
+        'user_authentification.id',
+        'repository_info.user_id'
+      )
+      .where('user_authentification.user_name', req.user.user_name)
+      .orderBy('repository_info.id');
+    console.log('getAll : ', getAll);
     res.status(200).send(getAll);
   } catch (err) {
     res.status(500).send(`internal Err : ${err}`);
@@ -11,7 +28,7 @@ const getAll = async (req, res) => {
 
 const createData = async (req, res) => {
   const newInfo = req.body;
-  console.log('req.user : ', req.user);
+  newInfo.user_id = req.user.id;
   try {
     await knex('repository_info').insert(newInfo);
     res.status(201).send(`data created!`);
