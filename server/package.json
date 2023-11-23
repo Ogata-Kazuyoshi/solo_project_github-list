@@ -10,6 +10,7 @@
     "migrate": "knex migrate:latest",
     "migrate-down": "knex migrate:down",
     "seed": "knex seed:run",
+    "seed-info": "knex seed:run --specific=002-delete_repoinfo.js && knex seed:run --specific=003-delete_user_authentification_table.js && knex seed:run --specific=003-seed_user_authentification_table.js && knex seed:run --specific=001-repoinfo.js",
     "makeMigration": "knex migrate:make",
     "makeSeed": "knex seed:make",
     "all-setup": "npm run migrate && npm run seed"

@@ -103,7 +103,6 @@ const login = (req, res) => {
 
 const checkAuth = (req, res) => {
   if (req.isAuthenticated()) {
-    console.log('req.user : ', req.user);
     res.json({
       authenticated: true,
       user: { id: req.user.id, username: req.user.user_name },
