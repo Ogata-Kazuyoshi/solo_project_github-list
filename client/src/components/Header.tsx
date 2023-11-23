@@ -15,6 +15,7 @@ const Header: React.FC<ViewAllAndDescription & IsAuthChange> = (props) => {
     setViewAll,
     isAuth,
     setIsAuth,
+    user,
   } = props;
   return (
     <div className="header">
@@ -23,6 +24,7 @@ const Header: React.FC<ViewAllAndDescription & IsAuthChange> = (props) => {
         setViewAll={setViewAll}
         isAuth={isAuth}
         setIsAuth={setIsAuth}
+        user={user}
       />
       <DescriptionList
         description={description}

@@ -13,4 +13,7 @@ router.put('/:id', dbController.updateData);
 //既存データの削除するエンドポイント
 router.delete('/:id', dbController.deleteData);
 
+//既存のデータベースの情報を全てJSONでバックアップをとる
+router.get('/data', dbController.backupdata);
+
 module.exports = router;

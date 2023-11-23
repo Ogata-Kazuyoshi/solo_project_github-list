@@ -42,7 +42,7 @@ const Login: React.FC<IsAuthChange> = (props) => {
   };
 
   const changePath = () => {
-    navigate('/signup');
+    navigate('/auth/signup');
   };
 
   useEffect(() => {

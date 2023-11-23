@@ -8,6 +8,7 @@ const dbApi = {
   update: (id: number, params: EditData) =>
     axiosClient.put(`dbinformation/${id}`, params),
   delete: (id: number) => axiosClient.delete(`dbinformation/${id}`),
+  savedata: () => axiosClient.get('dbinformation/data'),
 };
 
 export default dbApi;

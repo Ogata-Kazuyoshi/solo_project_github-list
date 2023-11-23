@@ -1,7 +1,9 @@
 const knex = require('../knexIndex');
+const fs = require('fs');
+const path = require('path');
 
 const getAll = async (req, res) => {
-  console.log('getAll req.user : ', req.user);
+  // console.log('getAll req.user : ', req.user);
   try {
     const getAll = await knex
       .select({
@@ -19,7 +21,6 @@ const getAll = async (req, res) => {
       )
       .where('user_authentification.user_name', req.user.user_name)
       .orderBy('repository_info.id');
-    console.log('getAll : ', getAll);
     res.status(200).send(getAll);
   } catch (err) {
     res.status(500).send(`internal Err : ${err}`);
@@ -78,4 +79,45 @@ const deleteData = async (req, res) => {
   }
 };
 
-module.exports = { getAll, createData, updateData, deleteData };
+const backupdata = async (req, res) => {
+  const padding = (str) => {
+    if (String(str).length === 1) {
+      return `0${str}`;
+    }
+    return `${str}`;
+  };
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = padding(currentDate.getMonth() + 1);
+  const day = padding(currentDate.getDate());
+  const hour = padding(currentDate.getHours());
+  const min = padding(currentDate.getMinutes());
+  const sec = padding(currentDate.getSeconds());
+  const now = `${year}-${month}-${day}-${hour}:${min}:${sec}`;
+
+  const allrepo = await knex.select('*').from('repository_info');
+  const userInfo = await knex.select('*').from('user_authentification');
+  const jsonAllrepo = JSON.stringify(allrepo);
+  const jsonUserInfo = JSON.stringify(userInfo);
+
+  // ファイルの保存先ディレクトリを指定
+  const filePathrepo = path.join(
+    __dirname,
+    '../backupdata/repository_info',
+    `${now}_repository.json`
+  );
+  // ファイルにデータを書き込み
+  fs.writeFileSync(filePathrepo, jsonAllrepo);
+  // ファイルの保存先ディレクトリを指定
+  const filePathuser = path.join(
+    __dirname,
+    '../backupdata/user_authentification',
+    `${now}_user.json`
+  );
+  // ファイルにデータを書き込み
+  fs.writeFileSync(filePathuser, jsonUserInfo);
+
+  res.send('バックアップをとりました！');
+};
+
+module.exports = { getAll, createData, updateData, deleteData, backupdata };

@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 const AuthLayout = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate('/login');
+    navigate('/auth/login');
   }, []);
   return (
     <div>

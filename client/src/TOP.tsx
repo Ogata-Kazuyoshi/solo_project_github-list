@@ -14,7 +14,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 const TOP: React.FC<IsAuthChange> = (props) => {
-  const { isAuth, setIsAuth } = props;
+  const { isAuth, setIsAuth, user } = props;
   const [viewAll, setViewAll] = useState<boolean>(true);
   const [allData, setAllData] = useState<ChangedData[]>([]);
   const [checkedData, setCheckedData] = useState<ChangedData[]>([]);
@@ -24,22 +24,24 @@ const TOP: React.FC<IsAuthChange> = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuth) navigate('/login');
-    const getData = async () => {
-      const res = await dbApi.getAll();
-      // console.log('res : ', res);
-      const tempData: RawData[] = res.data;
-      const changeRes = addUrl(tempData);
-      // console.log("changeRes : ", changeRes);
-      setAllData(changeRes);
-      const onlyDescription = createDescription(
-        tempData.map((elm) => elm.description)
-      );
-      // console.log("onlyDescription", onlyDescription);
-      setDescription(onlyDescription);
-    };
-    getData();
-  }, []);
+    if (!isAuth) navigate('/auth/login');
+    if (isAuth) {
+      const getData = async () => {
+        const res = await dbApi.getAll();
+        // console.log('res : ', res);
+        const tempData: RawData[] = res.data;
+        const changeRes = addUrl(tempData, user!.username);
+        // console.log("changeRes : ", changeRes);
+        setAllData(changeRes);
+        const onlyDescription = createDescription(
+          tempData.map((elm) => elm.description)
+        );
+        // console.log("onlyDescription", onlyDescription);
+        setDescription(onlyDescription);
+      };
+      getData();
+    }
+  }, [user]);
 
   useEffect(() => {
     const checkDescription = description
@@ -63,6 +65,7 @@ const TOP: React.FC<IsAuthChange> = (props) => {
         setDescription={setDescription}
         viewAll={viewAll}
         setViewAll={setViewAll}
+        user={user}
       />
       {viewAll ? (
         <CurrentList checkedData={checkedData} />

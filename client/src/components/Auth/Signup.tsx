@@ -36,26 +36,41 @@ const Signup: React.FC<IsAuthChange> = (props) => {
       window.alert('パスワードと確認用のパスワードが違います');
       return;
     }
-    const sendData = { username: userName, password: userPass };
+
+    //https://api.github.com/users/Gattaku
     try {
-      setUserName('');
-      setUserPass('');
-      setUserConfirmPass('');
-      const res = await authApi.signup(sendData);
-      console.log('res : ', res);
-      if (res.data.message) {
-        console.log('新規作成成功');
-        setIsAuth(true);
-        setUserConfirmPass('');
-        checkAuth!();
+      // const res = authApi.checkGithubAccount(userName);
+      const res = await fetch(`https://api.github.com/users/${userName}`);
+      console.log('res :', typeof res.status);
+      if (res.status === 200) {
+        const sendData = { username: userName, password: userPass };
+        try {
+          setUserName('');
+          setUserPass('');
+          setUserConfirmPass('');
+          const res = await authApi.signup(sendData);
+          console.log('res : ', res);
+          if (res.data.message) {
+            console.log('新規作成成功');
+            setIsAuth(true);
+            setUserConfirmPass('');
+            checkAuth!();
+          }
+        } catch (err) {
+          window.alert(
+            `認証に失敗しました すでに存在するユーザー名です : ${err}`
+          );
+        }
+      } else {
+        window.alert(`Githubに存在しないユーザー名は登録できません`);
       }
     } catch (err) {
-      window.alert(`認証に失敗しました すでに存在するユーザー名です : ${err}`);
+      window.alert(`err : ${err}`);
     }
   };
 
   const changePath = () => {
-    navigate('/login');
+    navigate('/auth/login');
   };
 
   useEffect(() => {

@@ -11,10 +11,10 @@ const changeDateToString = (created: String) => {
   return `${split[0]}-${split[1]}-${day[0]}`;
 };
 
-export const addUrl = (array: RawData[]): ChangedData[] => {
+export const addUrl = (array: RawData[], user: string): ChangedData[] => {
   return array.map((elm) => ({
     ...elm,
-    url: `https://github.com/Ogata-Kazuyoshi/${elm.project_name}`,
+    url: `https://github.com/${user}/${elm.project_name}`,
     create_date: changeDateToString(elm.create_date),
     edit: false,
   }));

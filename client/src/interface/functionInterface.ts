@@ -1,3 +1,8 @@
+export interface UserInfo {
+  id: number;
+  username: string;
+}
+
 export interface RawData {
   id: number;
   project_name: string;
@@ -64,6 +69,7 @@ export interface IsAuthChange {
   isAuth: boolean;
   setIsAuth: (arg: boolean) => void;
   checkAuth?: () => void;
+  user?: UserInfo;
 }
 
 export interface IsAuthCurrent {

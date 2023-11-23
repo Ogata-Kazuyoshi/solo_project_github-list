@@ -6,10 +6,15 @@ import Login from './components/Auth/Login';
 import Signup from './components/Auth/Signup';
 import { useEffect, useState } from 'react';
 import authApi from './api/auth';
+import Rooting from './Rooting';
+import { UserInfo } from './interface/functionInterface';
 
 function App() {
   const [isAuth, setIsAuth] = useState<boolean>(false);
-  // const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<UserInfo>({
+    id: NaN,
+    username: '',
+  });
 
   const checkAuth = async () => {
     try {
@@ -18,10 +23,13 @@ function App() {
       if (res.data.authenticated) {
         setIsAuth(true);
         console.log('res.data.user : ', res.data.user);
-        // setUser(res.data.user);
+        setUser(res.data.user);
       } else {
         setIsAuth(false);
-        // setUser(null);
+        setUser({
+          id: NaN,
+          username: '',
+        });
       }
     } catch (err) {
       console.log(`Error : ${err}`);
@@ -35,9 +43,10 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<AuthLayout />}>
+          <Route path="/" element={<Rooting />} />
+          <Route path="/auth" element={<AuthLayout />}>
             <Route
-              path="/login"
+              path="/auth/login"
               element={
                 <Login
                   isAuth={isAuth}
@@ -47,7 +56,7 @@ function App() {
               }
             />
             <Route
-              path="/signup"
+              path="/auth/signup"
               element={
                 <Signup
                   isAuth={isAuth}
@@ -56,12 +65,13 @@ function App() {
                 />
               }
             />
-            {/* <Route path="/resister" element={<Resister />} /> */}
           </Route>
           <Route>
             <Route
               path="/main"
-              element={<TOP isAuth={isAuth} setIsAuth={setIsAuth} />}
+              element={
+                <TOP isAuth={isAuth} setIsAuth={setIsAuth} user={user} />
+              }
             />
           </Route>
         </Routes>
