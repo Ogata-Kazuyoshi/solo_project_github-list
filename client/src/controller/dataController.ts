@@ -59,6 +59,10 @@ const checkDateType = (editDate: string): boolean => {
   return true;
 };
 
+const ableString =
+  'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-/';
+const ableArray = ableString.split('');
+
 export const editValidate = (
   editName: string,
   editDate: string,
@@ -77,6 +81,13 @@ export const editValidate = (
   if (editDescription === '') {
     result += `${cnt} : descriptionを入力してください\n`;
     cnt++;
+  }
+
+  for (const elm of editDescription) {
+    if (!ableArray.includes(elm)) {
+      result = `a〜z,A〜Z,0〜9,-,/以外の文字が含まれています`;
+      break;
+    }
   }
   return result;
 };

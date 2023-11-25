@@ -77,6 +77,7 @@ const TOP: React.FC<IsAuthChange> = (props) => {
           setAllData={setAllData}
           isModal={isModal}
           setIsModal={setIsModal}
+          user={user}
         />
       )}
     </div>

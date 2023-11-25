@@ -58,6 +58,7 @@ export interface EditData {
 export interface ModalType {
   setIsModal: (arg: boolean) => void;
   setAllData: (arg: ChangedData[]) => void;
+  user: UserInfo;
 }
 
 export interface AuthData {
@@ -69,7 +70,7 @@ export interface IsAuthChange {
   isAuth: boolean;
   setIsAuth: (arg: boolean) => void;
   checkAuth?: () => void;
-  user?: UserInfo;
+  user: UserInfo;
 }
 
 export interface IsAuthCurrent {

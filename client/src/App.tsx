@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import TOP from './TOP';
 import AuthLayout from './components/Auth/AuthLayout';
@@ -22,7 +22,7 @@ function App() {
       // console.log('res : ', res);
       if (res.data.authenticated) {
         setIsAuth(true);
-        console.log('res.data.user : ', res.data.user);
+        // console.log('res.data.user : ', res.data.user);
         setUser(res.data.user);
       } else {
         setIsAuth(false);
@@ -52,6 +52,7 @@ function App() {
                   isAuth={isAuth}
                   setIsAuth={setIsAuth}
                   checkAuth={checkAuth}
+                  user={user}
                 />
               }
             />
@@ -62,6 +63,7 @@ function App() {
                   isAuth={isAuth}
                   setIsAuth={setIsAuth}
                   checkAuth={checkAuth}
+                  user={user}
                 />
               }
             />

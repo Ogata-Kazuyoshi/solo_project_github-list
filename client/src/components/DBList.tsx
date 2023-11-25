@@ -1,34 +1,37 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from 'react';
 import {
   AllDataAndDescription,
   EditData,
-} from "../interface/functionInterface";
-import EditIcon from "@mui/icons-material/Edit";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import "../styles/dbList.css";
-import { editValidate } from "../controller/dataController";
-import dbApi from "../api/getData";
-import Modal from "./Modal";
+  UserInfo,
+} from '../interface/functionInterface';
+import EditIcon from '@mui/icons-material/Edit';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import '../styles/dbList.css';
+import { editValidate } from '../controller/dataController';
+import dbApi from '../api/getData';
+import Modal from './Modal';
 
-const DBList: React.FC<AllDataAndDescription> = (props) => {
-  const { allData, setAllData, isModal, setIsModal } = props;
+const DBList: React.FC<AllDataAndDescription & { user: UserInfo }> = (
+  props
+) => {
+  const { allData, setAllData, isModal, setIsModal, user } = props;
   // console.log(allData);
-  const [editName, setEditName] = useState<string>("");
-  const [editCreateDate, setEditCreateDate] = useState<string>("");
-  const [editDescription, setEditDescription] = useState<string>("");
+  const [editName, setEditName] = useState<string>('');
+  const [editCreateDate, setEditCreateDate] = useState<string>('');
+  const [editDescription, setEditDescription] = useState<string>('');
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
   const clickHandler = async (id: number) => {
-    console.log("id : ", id);
+    console.log('id : ', id);
 
     if (editIndex !== null) {
       if (editIndex !== id) {
-        window.alert("他が編集中です。編集を終了してください");
+        window.alert('他が編集中です。編集を終了してください');
         return;
       } else {
-        if (editValidate(editName, editCreateDate, editDescription) !== "") {
+        if (editValidate(editName, editCreateDate, editDescription) !== '') {
           window.alert(editValidate(editName, editCreateDate, editDescription));
           return;
         }
@@ -49,15 +52,15 @@ const DBList: React.FC<AllDataAndDescription> = (props) => {
           changeData.description = editDescription;
           tempAlldata[index].description = editDescription;
         }
-        console.log("changeData : ", changeData);
+        console.log('changeData : ', changeData);
         try {
           const res = await dbApi.update(editIndex, changeData);
-          console.log("res : ", res);
+          console.log('res : ', res);
           setEditIndex(null);
           setAllData(tempAlldata);
-          setEditName("");
-          setEditCreateDate("");
-          setEditDescription("");
+          setEditName('');
+          setEditCreateDate('');
+          setEditDescription('');
         } catch (err) {
           throw Error(`error : ${err}`);
         }
@@ -88,12 +91,14 @@ const DBList: React.FC<AllDataAndDescription> = (props) => {
   };
 
   const deleteHandler = async (id: number) => {
-    const index = allData.findIndex((elm) => elm.id === id);
-    if (index === -1) return;
-    await dbApi.delete(id);
-    const tempAllData = [...allData];
-    tempAllData.splice(index, 1);
-    setAllData(tempAllData);
+    if (window.confirm('本当に消しますか？')) {
+      const index = allData.findIndex((elm) => elm.id === id);
+      if (index === -1) return;
+      await dbApi.delete(id);
+      const tempAllData = [...allData];
+      tempAllData.splice(index, 1);
+      setAllData(tempAllData);
+    }
   };
 
   const addHandler = () => {
@@ -102,10 +107,12 @@ const DBList: React.FC<AllDataAndDescription> = (props) => {
 
   return (
     <div>
-      {isModal && <Modal setIsModal={setIsModal} setAllData={setAllData} />}
+      {isModal && (
+        <Modal setIsModal={setIsModal} setAllData={setAllData} user={user} />
+      )}
       <AddBoxIcon onClick={addHandler} />
       <div className="table">
-        <table border={1} style={{ height: "50px" }}>
+        <table border={1} style={{ height: '50px' }}>
           <thead>
             <tr>
               <th>id</th>
@@ -121,10 +128,10 @@ const DBList: React.FC<AllDataAndDescription> = (props) => {
             {allData.map((elm) => {
               return (
                 <tr key={elm.id}>
-                  <td align="center" width={"5%"}>
+                  <td align="center" width={'5%'}>
                     {elm.id}
                   </td>
-                  <td width={"40%"}>
+                  <td width={'40%'}>
                     {elm.edit ? (
                       <input
                         className="modify_content edit-input"
@@ -152,7 +159,7 @@ const DBList: React.FC<AllDataAndDescription> = (props) => {
                       </label>
                     )}
                   </td>
-                  <td width={"35%"}>
+                  <td width={'35%'}>
                     {elm.edit ? (
                       <input
                         className="modify_content edit-input"

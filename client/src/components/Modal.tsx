@@ -1,17 +1,17 @@
-import React, { ChangeEvent, useState } from "react";
-import { EditData, ModalType, RawData } from "../interface/functionInterface";
-import "../styles/modal.css";
-import { addUrl, editValidate } from "../controller/dataController";
-import dbApi from "../api/getData";
+import React, { ChangeEvent, useState } from 'react';
+import { EditData, ModalType, RawData } from '../interface/functionInterface';
+import '../styles/modal.css';
+import { addUrl, editValidate } from '../controller/dataController';
+import dbApi from '../api/getData';
 
 const Modal: React.FC<ModalType> = (props) => {
-  const { setIsModal, setAllData } = props;
-  const [addName, setAddName] = useState("");
-  const [addDate, setAddDate] = useState("");
-  const [addDescription, setAddDescription] = useState("");
+  const { setIsModal, setAllData, user } = props;
+  const [addName, setAddName] = useState('');
+  const [addDate, setAddDate] = useState('');
+  const [addDescription, setAddDescription] = useState('');
 
   const clickHandler = async () => {
-    if (editValidate(addName, addDate, addDescription) !== "") {
+    if (editValidate(addName, addDate, addDescription) !== '') {
       window.alert(editValidate(addName, addDate, addDescription));
       return;
     }
@@ -26,7 +26,7 @@ const Modal: React.FC<ModalType> = (props) => {
       await dbApi.createData(tempAdd);
       const tempAllRes = await dbApi.getAll();
       const tempData: RawData[] = tempAllRes.data;
-      const changeRes = addUrl(tempData);
+      const changeRes = addUrl(tempData, user.username);
 
       //   console.log("res :", res);
       setIsModal(false);
@@ -37,9 +37,9 @@ const Modal: React.FC<ModalType> = (props) => {
   };
 
   const cancelHandler = () => {
-    setAddName("");
-    setAddDate("");
-    setAddDescription("");
+    setAddName('');
+    setAddDate('');
+    setAddDescription('');
     setIsModal(false);
   };
 
