@@ -2,6 +2,7 @@
 const express = require('express');
 const apiRoute = require('./Routes');
 const cors = require('cors');
+const path = require('path');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const session = require('express-session');
@@ -27,7 +28,8 @@ const setupServer = () => {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  app.use(express.static('./dist/'));
+  // app.use(express.static('./dist/'));
+  app.use('/', express.static(path.join(__dirname, '../client/dist')));
   app.use('/api/v1', apiRoute);
 
   app.get('/login', (req, res) => {
